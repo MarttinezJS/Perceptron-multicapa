@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:perceptron_multicapa/src/page/resultado_page.dart';
 
 import 'src/page/home_page.dart';
 
@@ -12,9 +13,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Perceptron Multicapa',
-      initialRoute: 'home',
+      initialRoute: 'resultado',
       routes: {
         'home' : ( _ ) => HomePage(),
+        'resultado' : ( _ ) => ResultadoPage(),
       },
     );
   }

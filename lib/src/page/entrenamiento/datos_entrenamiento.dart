@@ -53,209 +53,8 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
       body: SingleChildScrollView(
         child: Row(
           children: [
-            Container(
-              width: size.width*0.5,
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(15),
-                    margin: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black) 
-                    ),
-                    child: Column(
-                      children: [
-                        Text('PARAMETROS DE ENTRADA', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
-                        SizedBox(height: 10,),
-                        DatosCsv(neuronaEntrada: datosRna.nEntrada, neuronaSalida: datosRna.nSalida, nPatrones: datosRna.numeroPatrones),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(15),
-                    margin: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black) 
-                    ),
-                    child: Column(
-                      children: [
-                        Text('Algoritmo de entrenamiento', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
-                        SizedBox(height: 10,),
-                        _crearDropdown(_aEntrenamiento, cambioEntrenamiento, _opcionEntrenamiento )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(15),
-                    margin: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black) 
-                    ),
-                    child: Column(
-                      children: [
-                        Text('Parametro de entrenamiento', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
-                        SizedBox(height: 20,),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: TextFormField(
-                                onChanged: (value) {
-                                  setState(() {
-                                    datosRna.iteraciones = value;
-                                  });
-                                },
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20)
-                                  ),
-                                  hintText: 'Numero de iteraciones',
-                                  labelText: 'Iteraciones',
-                                  helperText: 'Numero entero'
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10,),
-                            Expanded(
-                              child: TextFormField(
-                                onChanged: (value) {
-                                  setState(() {
-                                    datosRna.rata = value;
-                                  });
-                                },
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20)
-                                  ),
-                                  hintText: 'Rata de aprendizaje',
-                                  labelText: 'Rata',
-                                  helperText: 'Numero de 0 a 1'
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10,),
-                            Expanded(
-                              child: TextFormField(
-                                onChanged: (value) {
-                                  setState(() {
-                                    datosRna.errorMP = value;
-                                  });
-                                },
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20)
-                                  ),
-                                  hintText: 'Error maximo permitido',
-                                  labelText: 'IRMS',
-                                  helperText: 'Valor de 0 a 1',
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.all(15),
-                margin: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black) 
-                ),
-                width: size.width*0.5,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(child: Text('Configuración de la red', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),)),
-                    SizedBox(height: 20,),
-                    Text('Funcion de activasion de la capa de salida',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                    _crearDropdown(_funcionesSalida, funcionActSalida, _opcionActSalida ),
-                    SizedBox(height: 20,),
-                    Text('Capas ocultas',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                    SizedBox(height: 20,),
-                    Container(
-                      width:150,
-                      child: TextFormField(
-                        onChanged: (value) {
-                          setState(() {
-                            numeroCapas = value;
-                            datosRna.nCapa = int.parse(numeroCapas);
-                          });
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)
-                          ),
-                          hintText: 'No. de capass',
-                          labelText: 'No. de capas',
-                          helperText: 'Valor numerico',
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20,),
-                    Text('Agragar informacion de las capas',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                    SizedBox(height: 15,),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            onChanged: (value) {
-                              setState(() {
-                                capa = value;
-                              });
-                            },
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20)
-                              ),
-                              hintText: 'Capa ',
-                              labelText: 'Numero de neuronas',
-                              helperText: 'Valor numerico',
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10,),
-                        _crearDropdown(_funcionesCapa, funcionActCapa, _opcionActCapa ),
-                      ],
-                    ),
-                    SizedBox(height: 20,),
-                    Container(
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.only(bottom: 18),
-                      child: MaterialButton(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                        disabledColor: Colors.grey,
-                        elevation: 0,
-                        color: Colors.blue,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                          child: Text('Agregar capa', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                        ),
-                        onPressed: (){
-                          if(capa != ''){
-                            if(datosRna.neuronaPorCapa.length <= int.parse(numeroCapas)-1){
-                              print('paso');
-                              setState(() {
-                                datosRna.neuronaPorCapa.add(int.parse(capa));
-                                datosRna.funcionActCapa.add(_opcionActCapa);
-                              });
-                            }
-                          }
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )
+            ConfiguracionRNA(size),
+            Entrenamiento(size),
           ],
         ),
       ),
@@ -272,6 +71,251 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
           };
           await neuronaService.inicializarNeurona(data);
         },
+      ),
+    );
+  }
+
+  Expanded ConfiguracionRNA(Size size) {
+    return Expanded(
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(15),
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black) 
+            ),
+            width: size.width*0.5,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(child: Text('Configuración de la red', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),)),
+                SizedBox(height: 20,),
+                Text('Funcion de activasion de la capa de salida',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                _crearDropdown(_funcionesSalida, funcionActSalida, _opcionActSalida ),
+                SizedBox(height: 20,),
+                Text('Capas ocultas',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                SizedBox(height: 20,),
+                SizedBox(height: 20,),
+                Text('Agragar informacion de las capas',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                SizedBox(height: 15,),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        onChanged: (value) {
+                          setState(() {
+                            capa = value;
+                          });
+                        },
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)
+                          ),
+                          hintText: 'Capa ',
+                          labelText: 'Numero de neuronas',
+                          helperText: 'Valor numerico',
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10,),
+                    _crearDropdown(_funcionesCapa, funcionActCapa, _opcionActCapa ),
+                  ],
+                ),
+                SizedBox(height: 20,),
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.only(bottom: 18),
+                  child: MaterialButton(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    disabledColor: Colors.grey,
+                    elevation: 0,
+                    color: Colors.blue,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                      child: Text('Agregar capa', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                    ),
+                    onPressed: (){
+                      if(capa != ''){
+                        print('paso');
+                        setState(() {
+                          datosRna.neuronaPorCapa.add(int.parse(capa));
+                          datosRna.funcionActCapa.add(_opcionActCapa);
+                        });
+                      }
+                    },
+                  ),
+                ),
+                (datosRna.neuronaPorCapa.isNotEmpty) ? Column(
+                  children: [
+                    Table(
+                      border: TableBorder.all(width: 1.0),
+                      children: [
+                        TableRow(
+                          children: datosRna.neuronaPorCapa.map((e){
+                            return Center(
+                              child: Text(e.toString(), style: TextStyle(fontSize: 20),),
+                            );
+                          }).toList()
+                        )
+                      ],
+                    ),
+                    Table(
+                      border: TableBorder.all(width: 1.0),
+                      children: [
+                        TableRow(
+                          children: datosRna.funcionActCapa.map((e){
+                            return Center(
+                              child: Text(e, style: TextStyle(fontSize: 20),),
+                            );
+                          }).toList()
+                        )
+                      ],
+                    ),
+                  ],
+                ) : Container(),
+              ],
+            ),
+          ),
+          SizedBox(height: 20,),
+          Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.only(bottom: 18),
+            child: MaterialButton(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              disabledColor: Colors.grey,
+              elevation: 0,
+              color: Colors.blue,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                child: Text('Configurar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+              ),
+              onPressed: () async{
+                datosRna.neuronaPorCapa.add(datosRna.nSalida);
+                datosRna.funcionActCapa.add(datosRna.funActSalida);
+                final data = {
+                  "num_inputs": datosRna.nEntrada,
+                  "num_layers": datosRna.nCapa,
+                  "nodes_per_layer": datosRna.neuronaPorCapa,
+                  "activation_functions_names": datosRna.funcionActCapa
+                };
+                await neuronaService.inicializarNeurona(data);
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container Entrenamiento(Size size) {
+    return Container(
+      width: size.width*0.5,
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(15),
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black) 
+            ),
+            child: Column(
+              children: [
+                Text('PARAMETROS DE ENTRADA', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+                SizedBox(height: 10,),
+                DatosCsv(neuronaEntrada: datosRna.nEntrada, neuronaSalida: datosRna.nSalida, nPatrones: datosRna.numeroPatrones),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(15),
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black) 
+            ),
+            child: Column(
+              children: [
+                Text('Algoritmo de entrenamiento', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+                SizedBox(height: 10,),
+                _crearDropdown(_aEntrenamiento, cambioEntrenamiento, _opcionEntrenamiento )
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(15),
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black) 
+            ),
+            child: Column(
+              children: [
+                Text('Parametro de entrenamiento', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+                SizedBox(height: 20,),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        onChanged: (value) {
+                          setState(() {
+                            datosRna.iteraciones = value;
+                          });
+                        },
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)
+                          ),
+                          hintText: 'Numero de iteraciones',
+                          labelText: 'Iteraciones',
+                          helperText: 'Numero entero'
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10,),
+                    Expanded(
+                      child: TextFormField(
+                        onChanged: (value) {
+                          setState(() {
+                            datosRna.rata = value;
+                          });
+                        },
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)
+                          ),
+                          hintText: 'Rata de aprendizaje',
+                          labelText: 'Rata',
+                          helperText: 'Numero de 0 a 1'
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10,),
+                    Expanded(
+                      child: TextFormField(
+                        onChanged: (value) {
+                          setState(() {
+                            datosRna.errorMP = value;
+                          });
+                        },
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)
+                          ),
+                          hintText: 'Error maximo permitido',
+                          labelText: 'IRMS',
+                          helperText: 'Valor de 0 a 1',
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -323,8 +367,9 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
       datosRna.patrones;
     });
 
-    print('Numero de entrada $datosRna.nEntrada');
-    print('Numero de salida $datosRna.nSalida');
+    print('Numero de entrada ${datosRna.nEntrada}');
+    print('Numero de salida ${datosRna.nSalida}');
+    print('${datosRna.patrones}');
 
   }
 
