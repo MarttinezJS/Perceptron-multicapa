@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:perceptron_multicapa/src/global/enviroment.dart';
-import 'package:perceptron_multicapa/src/models/redNeuronalModel.dart';
+import 'package:perceptron_multicapa/src/models/red_neuronal_model.dart';
 
-class NeuronaService with ChangeNotifier{
+class NeuronaService extends ChangeNotifier{
   
   RedNeurona _red = RedNeurona(errors: [], layers: [], numInputs: 0, numLayers: 0);
 
@@ -16,7 +16,6 @@ class NeuronaService with ChangeNotifier{
 
   NeuronaService();
 
-<<<<<<< HEAD
   inicializarNeurona(data) async {
 
     http.Response res;
@@ -49,14 +48,6 @@ class NeuronaService with ChangeNotifier{
     }
 
     return _neuronaResponse(res);
-=======
-  inicializarNeurona(data) async{
-    print(jsonEncode(data));
-    final res = await http.post(Uri.parse('${Enviroment.uri}/init'),
-      body: jsonEncode(data)
-    );
-    // print(res.body);
->>>>>>> 061fb7a85f9b559ef73aed30d4a1a3e061fde147
   }
 
   simular(data) async {
