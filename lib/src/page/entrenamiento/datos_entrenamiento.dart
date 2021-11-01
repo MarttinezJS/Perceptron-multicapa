@@ -10,6 +10,7 @@ import 'package:file_picker/file_picker.dart';
 
 import 'package:perceptron_multicapa/src/models/datosRNA_model.dart';
 import 'package:perceptron_multicapa/src/service/neurona_service.dart';
+import 'package:perceptron_multicapa/src/utils/datos_convert.dart';
 import 'package:perceptron_multicapa/src/widgets/widgets.dart';
 
 class DatosEntrenamientoPage extends StatefulWidget {
@@ -31,7 +32,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
   String capa = '';
 
   final neuronaService = NeuronaService();
-
+  final csvConvert = DatosConvert();
   final datosRna = DatosRNA();
 
   @override
@@ -46,7 +47,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
         actions: [
           IconButton(
             icon: Icon(Icons.file_present_rounded, size: 32,),
-            onPressed: () => pickerCvs(),
+            onPressed: () => csvConvert.cargarCSV()
           ),
         ],
       ),
@@ -276,22 +277,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
     );
   }
 
-  pickerCvs() async{
-    FilePickerResult? picked;
-
-    picked = await FilePicker.platform.pickFiles(type: FileType.custom,
-      allowedExtensions: ['csv'],
-    );
-
-    if( picked == null ) {
-      return;
-    }
-    Uint8List? uploadfile = picked.files.first.bytes;
-    final fields = const Utf8Decoder().convert(uploadfile!.toList()).split('\n').map((e) => e.split(',')).toList();
-
-    entrada(fields);
-
-  }
+  
 
   entrada(List entrada){
     
@@ -303,7 +289,6 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
     tipoValor = entrada[0];
     entrada.removeAt(0);
     datosRna.patrones = entrada;
-    print('patrones ${datosRna.patrones.length}');
     datosRna.numeroPatrones = datosRna.patrones.length;
 
     int x = tipoValor.length;
@@ -322,9 +307,6 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
       datosRna.nSalida;
       datosRna.patrones;
     });
-
-    print('Numero de entrada $datosRna.nEntrada');
-    print('Numero de salida $datosRna.nSalida');
 
   }
 
