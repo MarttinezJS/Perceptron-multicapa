@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:perceptron_multicapa/src/page/entrenamiento/datos_entrenamiento.dart';
-import 'package:perceptron_multicapa/src/page/simulacion/listaDatos.dart';
+import 'package:perceptron_multicapa/src/page/simulacion/lista_datos.dart';
 
 
 final pageRoute = <Rutas> [

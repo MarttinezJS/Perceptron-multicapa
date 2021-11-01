@@ -1,15 +1,16 @@
+// ignore: file_names
 // To parse this JSON data, do
 //
 //     final response = responseFromMap(jsonString);
 
 import 'dart:convert';
 
-Response responseFromMap(String str) => Response.fromMap(json.decode(str));
+RedNeurona neuronaResponseFromMap(String str) => RedNeurona.fromMap(json.decode(str));
 
-String responseToMap(Response data) => json.encode(data.toMap());
+String neuronaResponseToMap(RedNeurona data) => json.encode(data.toMap());
 
-class Response {
-    Response({
+class RedNeurona {
+    RedNeurona({
       required  this.numInputs,
       required  this.numLayers,
       required  this.layers,
@@ -19,13 +20,13 @@ class Response {
     int numInputs;
     int numLayers;
     List<Layer> layers;
-    List<dynamic> errors;
+    List<double> errors;
 
-    factory Response.fromMap(Map<String, dynamic> json) => Response(
+    factory RedNeurona.fromMap(Map<String, dynamic> json) => RedNeurona(
         numInputs: json["num_inputs"],
         numLayers: json["num_layers"],
         layers: List<Layer>.from(json["layers"].map((x) => Layer.fromMap(x))),
-        errors: List<dynamic>.from(json["errors"].map((x) => x)),
+        errors: List<double>.from(json["errors"].map((x) => x)),
     );
 
     Map<String, dynamic> toMap() => {
