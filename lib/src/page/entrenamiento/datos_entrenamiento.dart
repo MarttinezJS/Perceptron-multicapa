@@ -7,6 +7,7 @@ import 'package:csv/csv.dart';
 import 'package:file_picker/file_picker.dart';
 
 import 'package:perceptron_multicapa/src/models/datosRNA_model.dart';
+import 'package:perceptron_multicapa/src/service/neurona_service.dart';
 import 'package:perceptron_multicapa/src/widgets/widgets.dart';
 
 class DatosEntrenamientoPage extends StatefulWidget {
@@ -19,15 +20,15 @@ class DatosEntrenamientoPage extends StatefulWidget {
 class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
 
   String _opcionEntrenamiento = 'Regla delta';
-  String _opcionActSalida = 'Sigmoide';
-  String _opcionActCapa = 'Sigmoide';
+  String _opcionActSalida = 'sigmoid';
+  String _opcionActCapa = 'sigmoid';
   List<String> _aEntrenamiento = ['Regla delta', 'Regla delta Modificada' ];
-  List<String> _funcionesSalida = ['Sigmoide', 'Gausiana', 'Tangente Hiperbolica', 'Lineal'];
-  List<String> _funcionesCapa = ['Sigmoide', 'Gausiana', 'Tangente Hiperbolica'];
+  List<String> _funcionesSalida = ['sigmoid', 'tanh', 'linear'];
+  List<String> _funcionesCapa = ['sigmoid','tanh'];
   String numeroCapas = '';
   String capa = '';
 
-
+  final neuronaService = NeuronaService();
 
   final datosRna = DatosRNA();
 
@@ -244,7 +245,6 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
                                 datosRna.neuronaPorCapa.add(int.parse(capa));
                                 datosRna.funcionActCapa.add(_opcionActCapa);
                               });
-
                             }
                           }
                         },
@@ -263,10 +263,10 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
           final data = {
             "num_inputs": datosRna.nEntrada,
             "num_layers": datosRna.nCapa,
-            "nodes_per_layer": [
-
-            ]
+            "nodes_per_layer": datosRna.neuronaPorCapa,
+            "activation_functions_names": datosRna.funcionActCapa
           };
+          neuronaService.inicializarNeurona(data);
         },
       ),
     );
