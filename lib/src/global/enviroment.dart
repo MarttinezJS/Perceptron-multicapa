@@ -1,3 +1,3 @@
 class Enviroment{
-  static final uri = 'http://192.168.1.54:8000/perceptron';
+  static final uri = 'http://127.0.0.1:8000/perceptron';
 }
