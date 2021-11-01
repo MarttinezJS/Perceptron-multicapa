@@ -10,6 +10,7 @@ import 'package:file_picker/file_picker.dart';
 
 import 'package:perceptron_multicapa/src/models/datosRNA_model.dart';
 import 'package:perceptron_multicapa/src/service/neurona_service.dart';
+import 'package:perceptron_multicapa/src/utils/datos_convert.dart';
 import 'package:perceptron_multicapa/src/widgets/widgets.dart';
 
 class DatosEntrenamientoPage extends StatefulWidget {
@@ -31,7 +32,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
   String capa = '';
 
   final neuronaService = NeuronaService();
-
+  final csvConvert = DatosConvert();
   final datosRna = DatosRNA();
 
   @override
@@ -46,7 +47,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
         actions: [
           IconButton(
             icon: Icon(Icons.file_present_rounded, size: 32,),
-            onPressed: () => pickerCvs(),
+            onPressed: () => csvConvert.cargarCSV()
           ),
         ],
       ),
@@ -320,6 +321,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
     );
   }
 
+<<<<<<< HEAD
   pickerCvs() async{
     FilePickerResult? picked;
 
@@ -336,6 +338,9 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
     entrada(fields);
 
   }
+=======
+  
+>>>>>>> 08e2ca417e0c9f48f34c68a421ef587bb351cf73
 
   entrada(List entrada){
     
@@ -347,7 +352,10 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
     tipoValor = entrada[0];
     entrada.removeAt(0);
     datosRna.patrones = entrada;
+<<<<<<< HEAD
     print('patrones ${datosRna.patrones.length}');
+=======
+>>>>>>> 08e2ca417e0c9f48f34c68a421ef587bb351cf73
     datosRna.numeroPatrones = datosRna.patrones.length;
 
     int x = tipoValor.length;
@@ -367,10 +375,13 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
       datosRna.patrones;
     });
 
+<<<<<<< HEAD
     print('Numero de entrada ${datosRna.nEntrada}');
     print('Numero de salida ${datosRna.nSalida}');
     print('${datosRna.patrones}');
 
+=======
+>>>>>>> 08e2ca417e0c9f48f34c68a421ef587bb351cf73
   }
 
   cambioEntrenamiento(opt){

@@ -2,7 +2,11 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:perceptron_multicapa/src/global/enviroment.dart';
+<<<<<<< HEAD
 import 'package:perceptron_multicapa/src/models/redNeuronalModel.dart';
+=======
+import 'package:perceptron_multicapa/src/models/red_neuronal_model.dart';
+>>>>>>> 08e2ca417e0c9f48f34c68a421ef587bb351cf73
 
 class NeuronaService extends ChangeNotifier{
   
