@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import 'dart:convert';
@@ -275,27 +277,17 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
   }
 
   pickerCvs() async{
-    final FilePickerResult? picked = await FilePicker.platform.pickFiles(
+    FilePickerResult? picked;
+
+    picked = await FilePicker.platform.pickFiles(type: FileType.custom,
       allowedExtensions: ['csv'],
-      type: FileType.custom
     );
 
     if( picked == null ) {
-      print('no selecciono nada');
       return;
     }
-    print('Tenemos datos ${ picked.paths }');
-              
-    PlatformFile file = picked.files.first;
-
-    final csvFile = new File(file.path!).openRead();
-              
-    final fields = await csvFile
-    .transform(utf8.decoder)
-    .transform(new CsvToListConverter())
-    .toList();
-
-    print(fields);
+    Uint8List? uploadfile = picked.files.first.bytes;
+    final fields = const Utf8Decoder().convert(uploadfile!.toList()).split('\n').map((e) => e.split(',')).toList();
 
     entrada(fields);
 
@@ -311,7 +303,6 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
     tipoValor = entrada[0];
     entrada.removeAt(0);
     datosRna.patrones = entrada;
-    print('entrada $tipoValor');
     print('patrones ${datosRna.patrones.length}');
     datosRna.numeroPatrones = datosRna.patrones.length;
 
