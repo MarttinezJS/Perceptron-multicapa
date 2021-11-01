@@ -259,14 +259,16 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.play_arrow),
-        onPressed: (){
+        onPressed : () async {
+          datosRna.neuronaPorCapa.add(datosRna.nSalida);
+          datosRna.funcionActCapa.add(datosRna.funActSalida);
           final data = {
             "num_inputs": datosRna.nEntrada,
             "num_layers": datosRna.nCapa,
             "nodes_per_layer": datosRna.neuronaPorCapa,
             "activation_functions_names": datosRna.funcionActCapa
           };
-          neuronaService.inicializarNeurona(data);
+          await neuronaService.inicializarNeurona(data);
         },
       ),
     );
