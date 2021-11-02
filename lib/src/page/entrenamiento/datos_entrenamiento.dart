@@ -24,6 +24,8 @@ class DatosEntrenamientoPage extends StatefulWidget {
 
 class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
 
+  bool datosListos = false;
+  bool redLista = false;
   String _opcionEntrenamiento = 'Regla delta';
   String _opcionActSalida = 'sigmoid';
   String _opcionActCapa = 'sigmoid';
@@ -51,6 +53,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
             icon: const Icon(Icons.file_present_rounded, size: 32,),
             onPressed: (){
               csvConvert.cargarCSV();
+              datosListos = true;
             }
           ),
         ],
@@ -141,7 +144,6 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
                 (datosRna.neuronaPorCapa.isNotEmpty) ? Column(
                   children: [
                     Table(
-                      border: TableBorder.all(width: 1.0),
                       children: [
                         TableRow(
                           children: datosRna.neuronaPorCapa.map((e){
@@ -153,7 +155,6 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
                       ],
                     ),
                     Table(
-                      border: TableBorder.all(width: 1.0),
                       children: [
                         TableRow(
                           children: datosRna.funcionActCapa.map((e){
@@ -182,9 +183,9 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 child: const Text('Configurar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
               ),
-              onPressed: () async{
+              onPressed: datosListos ? () async{
                 datosRna.neuronaPorCapa.add(datosConvert.nSalidas);
-                datosRna.funcionActCapa.add(datosRna.funActSalida);
+                datosRna.funcionActCapa.add(_opcionActSalida);
                 final data = {
                   "num_inputs": datosConvert.nEntradas,
                   "num_layers": datosRna.neuronaPorCapa.length,
@@ -196,8 +197,12 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
                   print('No se inicializao la neuronao');
                 }else{
                   print(resp);
+                  redLista = true;
+                  setState(() {
+                    
+                  });
                 }
-              },
+              } : null,
             ),
           ),
         ],
@@ -322,9 +327,9 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
               color: Colors.blue,
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                child: Text('Enviar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                child: const Text('Entrenar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
               ),
-              onPressed: () async{
+              onPressed: redLista ? () async{
                 
                 final data = {
                   "inputs": csvConvert.entradas,
@@ -339,7 +344,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
                 }else{
                   print('${neuronaService.redNeuronal.errors}');
                 }
-              },
+              } : null,
             ),
           ),
         ],

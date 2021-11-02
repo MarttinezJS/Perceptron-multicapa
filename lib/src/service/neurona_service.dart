@@ -14,7 +14,9 @@ class NeuronaService extends ChangeNotifier{
     notifyListeners();
   }
 
-  NeuronaService();
+  NeuronaService(){
+    getRed();
+  }
 
   getRed() async {
     http.Response res;

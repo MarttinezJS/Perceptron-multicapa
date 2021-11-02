@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
@@ -12,6 +13,7 @@ class DatosConvert extends ChangeNotifier{
   int nPatrones = 0;
   List<List<String>> entradas = [];
   List<List<String>> salidas = [];
+  List<List<String>> _banco = [];
 
 
   DatosConvert(){
@@ -19,8 +21,9 @@ class DatosConvert extends ChangeNotifier{
   }
 
   cargarCSV() async {
-    entradas = [];
-    salidas = [];
+    entradas.clear();
+    salidas.clear();
+    _banco.clear();
     nEntradas = 0;
     nSalidas = 0;
     FilePickerResult? picked;
@@ -33,19 +36,19 @@ class DatosConvert extends ChangeNotifier{
       return;
     }
     Uint8List? uploadfile = picked.files.first.bytes;
-    final banco = const Utf8Decoder().convert(uploadfile!.toList()).split('\n').map((e) => e.split(',')).toList();
-
-    banco.removeAt(0).forEach((e) {
+    _banco = const Utf8Decoder().convert(uploadfile!.toList()).split('\n').map((e) => e.split(',')).toList();
+    print(_banco);
+    _banco.removeAt(0).forEach((e) {
       if(e.toLowerCase().contains('y')){
         nSalidas++;
       }else{
         nEntradas++;
       }
     });
-    nPatrones =  banco.length;
-    for (var e in banco) {
+    nPatrones =  _banco.length;
+    for (var e in _banco) {
       entradas.add(e.getRange(0, nEntradas).toList());
-      salidas.add(e.getRange(nSalidas, banco.length).toList());
+      salidas.add(e.getRange(nSalidas, _banco.length).toList());
     }
 
     notifyListeners();

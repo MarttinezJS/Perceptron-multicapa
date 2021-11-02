@@ -33,9 +33,9 @@ class _ResultadoPageState extends State<ResultadoPage> {
       body: SingleChildScrollView(
         child: Container(
           child: Column(
-            children: [
+            children: const [
               SizedBox(height:20),
-              GraficaError(errorModel: listError,)
+              GraficaError()
             ],
           ),
         ),
