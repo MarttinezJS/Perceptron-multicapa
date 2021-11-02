@@ -1,9 +1,25 @@
-class ErrorModel {
+import 'dart:convert';
 
-  ErrorModel(this.interaciones, this.error);
+ErrorModel ErrorModelFromMap(String str) => ErrorModel.fromMap(json.decode(str));
 
-  final int interaciones;
-  final double error;
+String ErrorModelToMap(ErrorModel data) => json.encode(data.toMap());
 
+
+class ErrorModel{
+    ErrorModel({
+        required this.errors,
+        
+    });
+
+    List<double> errors;
+
+
+    factory ErrorModel.fromMap(Map<String, dynamic> json) => ErrorModel(
+        errors: List<double>.from(json["errors"].map((x) => x.toDouble())),
+    );
+
+    Map<String, dynamic> toMap() => {
+        "errors": List<dynamic>.from(errors.map((x) => x)),
+    };
 }
 

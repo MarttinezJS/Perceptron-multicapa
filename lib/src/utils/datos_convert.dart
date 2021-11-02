@@ -14,9 +14,15 @@ class DatosConvert extends ChangeNotifier{
   List<String> salidas = [];
 
 
-  DatosConvert();
+  DatosConvert(){
+    cargarCSV();
+  }
 
   cargarCSV() async {
+    entradas = [];
+    salidas = [];
+    nEntradas = 0;
+    nSalidas = 0;
     FilePickerResult? picked;
 
     picked = await FilePicker.platform.pickFiles(type: FileType.custom,

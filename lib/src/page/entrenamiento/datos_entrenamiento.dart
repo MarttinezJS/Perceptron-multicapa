@@ -1,3 +1,4 @@
+import 'dart:js';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:perceptron_multicapa/src/models/datosRNA_model.dart';
 import 'package:perceptron_multicapa/src/service/neurona_service.dart';
 import 'package:perceptron_multicapa/src/utils/datos_convert.dart';
 import 'package:perceptron_multicapa/src/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class DatosEntrenamientoPage extends StatefulWidget {
   DatosEntrenamientoPage({Key? key}) : super(key: key);
@@ -32,12 +34,12 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
   String capa = '';
 
   final neuronaService = NeuronaService();
-  final csvConvert = DatosConvert();
   final datosRna = DatosRNA();
 
   @override
   Widget build(BuildContext context) {
 
+    final csvConvert = Provider.of<DatosConvert>(context);
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -47,7 +49,9 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
         actions: [
           IconButton(
             icon: Icon(Icons.file_present_rounded, size: 32,),
-            onPressed: () => csvConvert.cargarCSV()
+            onPressed: (){
+              csvConvert.cargarCSV();
+            }
           ),
         ],
       ),
@@ -55,23 +59,9 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
         child: Row(
           children: [
             ConfiguracionRNA(size),
-            Entrenamiento(size),
+            Entrenamiento(size, csvConvert),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.play_arrow),
-        onPressed : () async {
-          datosRna.neuronaPorCapa.add(datosRna.nSalida);
-          datosRna.funcionActCapa.add(datosRna.funActSalida);
-          final data = {
-            "num_inputs": datosRna.nEntrada,
-            "num_layers": datosRna.nCapa,
-            "nodes_per_layer": datosRna.neuronaPorCapa,
-            "activation_functions_names": datosRna.funcionActCapa
-          };
-          await neuronaService.inicializarNeurona(data);
-        },
       ),
     );
   }
@@ -210,7 +200,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
     );
   }
 
-  Container Entrenamiento(Size size) {
+  Container Entrenamiento(Size size, DatosConvert csvConvert) {
     return Container(
       width: size.width*0.5,
       child: Column(
@@ -225,7 +215,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
               children: [
                 Text('PARAMETROS DE ENTRADA', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
                 SizedBox(height: 10,),
-                DatosCsv(neuronaEntrada: datosRna.nEntrada, neuronaSalida: datosRna.nSalida, nPatrones: datosRna.numeroPatrones),
+                DatosCsv(neuronaEntrada: csvConvert.nEntradas, neuronaSalida: csvConvert.nSalidas, nPatrones: csvConvert.nPatrones),
               ],
             ),
           ),
@@ -315,32 +305,40 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
                 )
               ],
             ),
-          )
+          ),
+          SizedBox(height: 20,),
+          Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.only(bottom: 18),
+            child: MaterialButton(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              disabledColor: Colors.grey,
+              elevation: 0,
+              color: Colors.blue,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                child: Text('Enviar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+              ),
+              onPressed: () async{
+                
+                final data = {
+                  "inputs": csvConvert.entradas,
+                  "outputs": csvConvert.salidas,
+                  "learning_rate": datosRna.rata,
+                  "tolerance": datosRna.errorMP,
+                  "epochs": datosRna.iteraciones
+                };
+                 await neuronaService.entrenarNeurona(data);
+                 print('${neuronaService.redNeuronal.errors}');
+              },
+            ),
+          ),
         ],
       ),
     );
   }
 
-<<<<<<< HEAD
-  pickerCvs() async{
-    FilePickerResult? picked;
-
-    picked = await FilePicker.platform.pickFiles(type: FileType.custom,
-      allowedExtensions: ['csv'],
-    );
-
-    if( picked == null ) {
-      return;
-    }
-    Uint8List? uploadfile = picked.files.first.bytes;
-    final fields = const Utf8Decoder().convert(uploadfile!.toList()).split('\n').map((e) => e.split(',')).toList();
-
-    entrada(fields);
-
-  }
-=======
   
->>>>>>> 08e2ca417e0c9f48f34c68a421ef587bb351cf73
 
   entrada(List entrada){
     
@@ -352,10 +350,6 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
     tipoValor = entrada[0];
     entrada.removeAt(0);
     datosRna.patrones = entrada;
-<<<<<<< HEAD
-    print('patrones ${datosRna.patrones.length}');
-=======
->>>>>>> 08e2ca417e0c9f48f34c68a421ef587bb351cf73
     datosRna.numeroPatrones = datosRna.patrones.length;
 
     int x = tipoValor.length;
@@ -375,13 +369,6 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
       datosRna.patrones;
     });
 
-<<<<<<< HEAD
-    print('Numero de entrada ${datosRna.nEntrada}');
-    print('Numero de salida ${datosRna.nSalida}');
-    print('${datosRna.patrones}');
-
-=======
->>>>>>> 08e2ca417e0c9f48f34c68a421ef587bb351cf73
   }
 
   cambioEntrenamiento(opt){
