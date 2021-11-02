@@ -26,10 +26,8 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
 
   bool datosListos = false;
   bool redLista = false;
-  String _opcionEntrenamiento = 'Regla delta';
   String _opcionActSalida = 'sigmoid';
   String _opcionActCapa = 'sigmoid';
-  final List<String> _aEntrenamiento = ['Regla delta', 'Regla delta Modificada' ];
   final List<String> _funcionesSalida = ['sigmoid', 'tanh', 'linear'];
   final List<String> _funcionesCapa = ['sigmoid','tanh'];
   String numeroCapas = '';
@@ -46,7 +44,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Datos Entrenamiento', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
+        title: const Text('Datos Entrenamiento', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)),
         centerTitle: true,
         actions: [
           IconButton(
@@ -59,10 +57,16 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Row(
+        child: Column(
           children: [
-            ConfiguracionRNA(size, csvConvert),
-            Entrenamiento(size, csvConvert),
+            Row(
+              children: [
+                ConfiguracionRNA(size, csvConvert),
+                Entrenamiento(size, csvConvert),
+              ],
+            ),
+            SizedBox(height: 20,),
+            GraficaError(errorGrafica: neuronaService.redNeuronal.errors),
           ],
         ),
       ),
@@ -76,9 +80,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
           Container(
             padding: EdgeInsets.all(15),
             margin: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black) 
-            ),
+            decoration: _decoratedCard(),
             width: size.width*0.5,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,9 +89,6 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
                 SizedBox(height: 20,),
                 Text('Funcion de activasion de la capa de salida',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
                 _crearDropdown(_funcionesSalida, funcionActSalida, _opcionActSalida ),
-                SizedBox(height: 20,),
-                Text('Capas ocultas',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                SizedBox(height: 20,),
                 SizedBox(height: 20,),
                 Text('Agragar informacion de las capas',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
                 SizedBox(height: 15,),
@@ -124,7 +123,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
                   child: MaterialButton(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                     disabledColor: Colors.grey,
-                    elevation: 0,
+                    elevation: 15,
                     color: Colors.blue,
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
@@ -177,7 +176,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
             child: MaterialButton(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               disabledColor: Colors.grey,
-              elevation: 0,
+              elevation: 15,
               color: Colors.blue,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
@@ -210,6 +209,21 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
     );
   }
 
+  BoxDecoration _decoratedCard() {
+    return BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.black),
+            borderRadius: BorderRadius.circular(25),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 20,
+                offset: Offset(0, 6)
+              )
+            ]
+          );
+  }
+
   Container Entrenamiento(Size size, DatosConvert csvConvert) {
     return Container(
       width: size.width*0.5,
@@ -218,9 +232,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
           Container(
             padding: EdgeInsets.all(15),
             margin: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black) 
-            ),
+            decoration: _decoratedCard(),
             child: Column(
               children: [
                 Text('PARAMETROS DE ENTRADA', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
@@ -232,23 +244,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
           Container(
             padding: EdgeInsets.all(15),
             margin: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black) 
-            ),
-            child: Column(
-              children: [
-                Text('Algoritmo de entrenamiento', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
-                SizedBox(height: 10,),
-                _crearDropdown(_aEntrenamiento, cambioEntrenamiento, _opcionEntrenamiento )
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(15),
-            margin: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black) 
-            ),
+            decoration: _decoratedCard(),
             child: Column(
               children: [
                 Text('Parametro de entrenamiento', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
@@ -323,7 +319,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
             child: MaterialButton(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               disabledColor: Colors.grey,
-              elevation: 0,
+              elevation: 15,
               color: Colors.blue,
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
@@ -342,7 +338,8 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
                 if(resp == false){
                   print('Todo mal');
                 }else{
-                  print('${neuronaService.redNeuronal.errors}');
+                  setState(() {
+                  });
                 }
               } : null,
             ),
@@ -385,13 +382,6 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
 
   }
 
-  cambioEntrenamiento(opt){
-    setState(() {
-      _opcionEntrenamiento = opt.toString();
-      datosRna.entrenamiento = _opcionEntrenamiento;
-      print(datosRna.entrenamiento);
-    });
-  }
 
   funcionActSalida(opt){
     setState(() {

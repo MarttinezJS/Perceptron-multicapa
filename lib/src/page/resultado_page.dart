@@ -35,7 +35,7 @@ class _ResultadoPageState extends State<ResultadoPage> {
           child: Column(
             children: const [
               SizedBox(height:20),
-              GraficaError()
+              GraficaError(errorGrafica: [],)
             ],
           ),
         ),
