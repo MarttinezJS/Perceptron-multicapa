@@ -36,7 +36,7 @@ class DatosConvert extends ChangeNotifier{
         nEntradas++;
       }
     });
-
+    nPatrones =  banco.length;
     for (var e in banco) {
       entradas = entradas.followedBy(e.getRange(0, nEntradas)).toList();
       salidas = salidas.followedBy(e.getRange(nSalidas, banco.length)).toList();

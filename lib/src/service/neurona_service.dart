@@ -16,6 +16,16 @@ class NeuronaService extends ChangeNotifier{
 
   NeuronaService();
 
+  getInfo() async {
+    http.Response res;
+    try {
+      res = await http.get(Uri.parse('${Enviroment.uri}/'));
+    } catch (e) {
+      res = http.Response(e.toString(), 500);
+    }
+
+  }
+
   inicializarNeurona(data) async {
 
     http.Response res;
