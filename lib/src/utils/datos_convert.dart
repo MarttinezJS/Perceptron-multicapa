@@ -10,8 +10,8 @@ class DatosConvert extends ChangeNotifier{
   int nEntradas = 0;
   int nSalidas = 0;
   int nPatrones = 0;
-  List<String> entradas = [];
-  List<String> salidas = [];
+  List<List<String>> entradas = [];
+  List<List<String>> salidas = [];
 
 
   DatosConvert(){
@@ -42,10 +42,10 @@ class DatosConvert extends ChangeNotifier{
         nEntradas++;
       }
     });
-
+    nPatrones =  banco.length;
     for (var e in banco) {
-      entradas = entradas.followedBy(e.getRange(0, nEntradas)).toList();
-      salidas = salidas.followedBy(e.getRange(nSalidas, banco.length)).toList();
+      entradas.add(e.getRange(0, nEntradas).toList());
+      salidas.add(e.getRange(nSalidas, banco.length).toList());
     }
 
     notifyListeners();

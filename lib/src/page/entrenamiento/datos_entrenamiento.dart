@@ -27,9 +27,9 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
   String _opcionEntrenamiento = 'Regla delta';
   String _opcionActSalida = 'sigmoid';
   String _opcionActCapa = 'sigmoid';
-  List<String> _aEntrenamiento = ['Regla delta', 'Regla delta Modificada' ];
-  List<String> _funcionesSalida = ['sigmoid', 'tanh', 'linear'];
-  List<String> _funcionesCapa = ['sigmoid','tanh'];
+  final List<String> _aEntrenamiento = ['Regla delta', 'Regla delta Modificada' ];
+  final List<String> _funcionesSalida = ['sigmoid', 'tanh', 'linear'];
+  final List<String> _funcionesCapa = ['sigmoid','tanh'];
   String numeroCapas = '';
   String capa = '';
 
@@ -44,11 +44,11 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Datos Entrenamiento', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
+        title: const Text('Datos Entrenamiento', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.file_present_rounded, size: 32,),
+            icon: const Icon(Icons.file_present_rounded, size: 32,),
             onPressed: (){
               csvConvert.cargarCSV();
             }
@@ -58,7 +58,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
       body: SingleChildScrollView(
         child: Row(
           children: [
-            ConfiguracionRNA(size),
+            ConfiguracionRNA(size, csvConvert),
             Entrenamiento(size, csvConvert),
           ],
         ),
@@ -66,7 +66,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
     );
   }
 
-  Expanded ConfiguracionRNA(Size size) {
+  Expanded ConfiguracionRNA(Size size, DatosConvert datosConvert) {
     return Expanded(
       child: Column(
         children: [
@@ -169,29 +169,34 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
               ],
             ),
           ),
-          SizedBox(height: 20,),
+          const SizedBox(height: 20,),
           Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.only(bottom: 18),
+            padding: const EdgeInsets.only(bottom: 18),
             child: MaterialButton(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               disabledColor: Colors.grey,
               elevation: 0,
               color: Colors.blue,
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                child: Text('Configurar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                child: const Text('Configurar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
               ),
               onPressed: () async{
-                datosRna.neuronaPorCapa.add(datosRna.nSalida);
+                datosRna.neuronaPorCapa.add(datosConvert.nSalidas);
                 datosRna.funcionActCapa.add(_opcionActSalida);
                 final data = {
-                  "num_inputs": datosRna.nEntrada,
-                  "num_layers": datosRna.nCapa,
+                  "num_inputs": datosConvert.nEntradas,
+                  "num_layers": datosRna.neuronaPorCapa.length,
                   "nodes_per_layer": datosRna.neuronaPorCapa,
                   "activation_functions_names": datosRna.funcionActCapa
                 };
-                await neuronaService.inicializarNeurona(data);
+                final resp = await neuronaService.inicializarNeurona(data);
+                if(resp == false){
+                  print('No se inicializao la neuronao');
+                }else{
+                  print(resp);
+                }
               },
             ),
           ),
@@ -328,8 +333,12 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
                   "tolerance": datosRna.errorMP,
                   "epochs": datosRna.iteraciones
                 };
-                 await neuronaService.entrenarNeurona(data);
-                 print('${neuronaService.redNeuronal.errors}');
+                final resp = await neuronaService.entrenarNeurona(data);
+                if(resp == false){
+                  print('Todo mal');
+                }else{
+                  print('${neuronaService.redNeuronal.errors}');
+                }
               },
             ),
           ),

@@ -16,6 +16,17 @@ class NeuronaService extends ChangeNotifier{
 
   NeuronaService();
 
+  getRed() async {
+    http.Response res;
+    try {
+      res = await http.get(Uri.parse('${Enviroment.uri}/'));
+    } catch (e) {
+      res = http.Response(e.toString(), 500);
+    }
+
+    return _neuronaResponse(res);
+  }
+
   inicializarNeurona(data) async {
 
     http.Response res;
@@ -64,17 +75,13 @@ class NeuronaService extends ChangeNotifier{
       res = http.Response(e.toString(), 500);
     }
 
-    if(res.statusCode == 200){
-      // return res.body
-      print(res.body);
-    }
+    return _neuronaResponse(res);
   }
 
   _neuronaResponse(http.Response res){
     if(res.statusCode == 200) {
-
       redNeuronal = neuronaResponseFromMap(res.body);
-      return true; 
+      return redNeuronal;
     }else{
       return false;
     }
