@@ -184,7 +184,7 @@ class _DatosEntrenamientoPageState extends State<DatosEntrenamientoPage> {
               ),
               onPressed: () async{
                 datosRna.neuronaPorCapa.add(datosConvert.nSalidas);
-                datosRna.funcionActCapa.add(datosRna.funActSalida);
+                datosRna.funcionActCapa.add(_opcionActSalida);
                 final data = {
                   "num_inputs": datosConvert.nEntradas,
                   "num_layers": datosRna.neuronaPorCapa.length,
