@@ -3,15 +3,13 @@ import 'package:flutter/material.dart';
 
 import 'package:perceptron_multicapa/src/models/error_model.dart';
 import 'package:perceptron_multicapa/src/service/neurona_service.dart';
+import 'package:provider/provider.dart';
 
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class GraficaError extends StatefulWidget {
-  
 
-  final List<ErrorModel> errorModel;
-
-  const GraficaError({Key? key, required this.errorModel}) : super(key: key);
+  const GraficaError({Key? key}) : super(key: key);
 
 
   @override
@@ -22,22 +20,16 @@ class _GraficaErrorState extends State<GraficaError> {
 
   List<ErrorModel> _error = [];
 
-  final neuronalservice = NeuronaService();
-
-  @override
-  void initState() {
-    _error = getErrorGrafi();
-    super.initState();
-  }
-
+  NeuronaService neuronalservice = NeuronaService();
 
   @override
   Widget build(BuildContext context) {
-
-    final List<double> iteraciones = List.generate(neuronalservice.redNeuronal.errors.length, (index) => (index++).toDouble());
-    print(iteraciones);
     
+    neuronalservice = Provider.of<NeuronaService>(context);
+
     final List<double> errorGrafica = neuronalservice.redNeuronal.errors;
+    final List<double> iteraciones = neuronalservice.redNeuronal.errors;
+    
 
     final size = MediaQuery.of(context).size;
     return Center(
@@ -52,7 +44,7 @@ class _GraficaErrorState extends State<GraficaError> {
           series: <LineSeries>[
             LineSeries<double, double>(
               dataSource: neuronalservice.redNeuronal.errors,
-              xValueMapper: (  iteraciones, _) => iteraciones,
+              xValueMapper: (  iteraciones, nombre) => nombre.toDouble(),
               yValueMapper: ( errorGrafica, _) => errorGrafica,
               dataLabelSettings: DataLabelSettings(isVisible: true,),
             ),
@@ -62,13 +54,4 @@ class _GraficaErrorState extends State<GraficaError> {
       ),
     );
   }
-
-
-
-  List<ErrorModel> getErrorGrafi(){
-    final List<ErrorModel> error = widget.errorModel;
-    return error;
-  }
-
-
 }
